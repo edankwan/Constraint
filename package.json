@@ -38,7 +38,7 @@
     "uglify-js": "^2.5.0"
   },
   "scripts": {
-    "start": "node dev.js",
+    "dev": "node dev.js",
     "build": "node build.js"
   },
   "author": "",

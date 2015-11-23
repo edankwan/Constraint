@@ -17,6 +17,7 @@ var ground = require('./3d/ground');
 var vignette = require('./3d/vignette');
 var reflectedGround = require('./3d/reflectedGround');
 var math = require('./utils/math');
+var mobile = require('./fallback/mobile');
 
 var undef;
 var _gui;
@@ -191,11 +192,14 @@ function _render(dt) {
     _control.maxDistance = zoomAnimation === 1 ? 1500 : math.lerp(1500, 900, zoomAnimation);
     _control.update();
 
+
+
     // update mouse3d
     _camera.updateMatrixWorld();
     _ray.origin.setFromMatrixPosition( _camera.matrixWorld );
     _ray.direction.set( settings.mouse.x, settings.mouse.y, 0.5 ).unproject( _camera ).sub( _ray.origin ).normalize();
-    _ray.origin.add( _ray.direction.multiplyScalar( _ray.origin.length() * 0.9 ) );
+    var distance = _ray.origin.length() / Math.cos(Math.PI - _ray.direction.angleTo(_ray.origin));
+    _ray.origin.add( _ray.direction.multiplyScalar(distance * 0.9)); // make it a bit closer to the camerato see more white edges
 
     lights.update(dt, _camera);
     fbo.update(dt);
@@ -227,10 +231,12 @@ function _render(dt) {
 
 }
 
-quickLoader.add('images/logo.png');
-quickLoader.add('images/normal.jpg');
-quickLoader.start(function(percent) {
-    if(percent === 1) {
-        init();
-    }
+mobile.pass(function() {
+    quickLoader.add('images/logo.png');
+    quickLoader.add('images/normal.jpg');
+    quickLoader.start(function(percent) {
+        if(percent === 1) {
+            init();
+        }
+    });
 });
