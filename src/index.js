@@ -137,7 +137,7 @@ function init() {
 function _bindTouch(func) {
     return function (evt) {
         func(evt.changedTouches[0]);
-    }
+    };
 }
 
 function _onDown(evt) {

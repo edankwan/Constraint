@@ -129,7 +129,7 @@ function _updateVelocity(dt) {
     _velocityRenderTarget2 = tmp;
 
     _fboMesh.material = _velocityShader;
-    _positionShader.uniforms.time.value = _time;
+    _velocityShader.uniforms.time.value = _time;
     _velocityShader.uniforms.textureVelocity.value = _velocityRenderTarget2;
     _velocityShader.uniforms.texturePosition.value = _positionRenderTarget;
     _renderer.render( _fboScene, _fboCamera, _velocityRenderTarget );
