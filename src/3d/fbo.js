@@ -27,6 +27,7 @@ exports.init = init;
 exports.update = update;
 
 exports.positionRenderTarget = undef;
+exports.prevPositionRenderTarget = undef;
 
 function init(renderer) {
 
@@ -210,6 +211,7 @@ function update(dt) {
     _updatePosition(dt);
 
     exports.positionRenderTarget = _positionRenderTarget;
+    exports.prevPositionRenderTarget = _positionRenderTarget2;
 }
 
 

@@ -73,7 +73,7 @@ function _initReflection() {
     reflection.matrixNeedsUpdate = true;
 
     var width = 1024;
-    var height =  1024 ;
+    var height =  1024;
     _clipBias =  0.0 ;
 
     _mirrorPlane = new THREE.Plane();

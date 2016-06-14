@@ -24,6 +24,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     // API
 
+    this.rotateEaseRatio = 0.02;
+    this.zoomEaseRatio = 0.05;
+
     // Set to false to disable this control
     this.enabled = true;
 
@@ -291,8 +294,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 
         }
 
-        theta += thetaDelta;
-        phi += phiDelta;
+        var thetaDeltaBit = thetaDelta * this.rotateEaseRatio;
+        var phiDeltaBit = phiDelta * this.rotateEaseRatio;
+        var scaleBit = (scale - 1) * this.zoomEaseRatio;
+        theta += thetaDeltaBit;
+        phi += phiDeltaBit;
 
         // restrict theta to be between desired limits
         theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, theta ) );
@@ -303,7 +309,7 @@ THREE.OrbitControls = function ( object, domElement ) {
         // restrict phi to be betwee EPS and PI-EPS
         phi = Math.max( EPS, Math.min( Math.PI - EPS, phi ) );
 
-        var radius = offset.length() * scale;
+        var radius = offset.length() * (1 + scaleBit);
 
         // restrict radius to be between desired limits
         radius = Math.max( this.minDistance, Math.min( this.maxDistance, radius ) );
@@ -322,9 +328,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
         this.object.lookAt( this.target );
 
-        thetaDelta = 0;
-        phiDelta = 0;
-        scale = 1;
+        thetaDelta -= thetaDeltaBit;
+        phiDelta -= phiDeltaBit;
+        scale = scale / (1 + scaleBit);
         pan.set( 0, 0, 0 );
 
         // update condition is:
